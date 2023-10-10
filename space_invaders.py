@@ -10,15 +10,15 @@ FPS = 24    # frame per second
 clock = pg.time.Clock()
 
 # изображения
-bg_img = pg.image.load('src/background.png')
-icon_img = pg.image.load('src/ufo.png')
+bg_img = pg.image.load('2023_space_invaders/src/background.png')
+icon_img = pg.image.load('2023_space_invaders/src/ufo.png')
 
 display = pg.display.set_mode((screen_width, screen_height))
 pg.display.set_icon(icon_img)
 pg.display.set_caption('Космическое вторжение')
 
 sys_font = pg.font.SysFont('arial', 34)
-font = pg.font.Font('src/04B_19.TTF', 48)
+font = pg.font.Font('2023_space_invaders/src/04B_19.TTF', 48)
 
 # display.fill('blue', (0, 0, screen_width, screen_height))
 display.blit(bg_img, (0, 0))        # image.tr
@@ -31,7 +31,7 @@ w, h = game_over_text.get_size()
 # display.blit(game_over_text, (screen_width/2 - w/2, screen_height / 2 - h/2))
 
 # игрок
-player_img = pg.image.load('src/player.png')
+player_img = pg.image.load('2023_space_invaders/src/player.png')
 player_width, player_height = player_img.get_size()
 player_gap = 10
 player_velocity = 10
@@ -40,7 +40,7 @@ player_x = screen_width/2 - player_width/2
 player_y = screen_height  - player_height - player_gap
 
 # пуля
-bullet_img = pg.image.load('src/bullet.png')
+bullet_img = pg.image.load('2023_space_invaders/src/bullet.png')
 bullet_width, bullet_height = bullet_img.get_size()
 bullet_dy = -5
 bullet_x = 0     # микро дз - пускать из середины
@@ -48,7 +48,7 @@ bullet_y = 0
 bullet_alive = False    # есть пуля?
 
 # противник
-enemy_img = pg.image.load('src/enemy.png')
+enemy_img = pg.image.load('2023_space_invaders/src/enemy.png')
 enemy_width, enemy_height = enemy_img.get_size()
 enemy_dx = 0
 enemy_dy = 1
