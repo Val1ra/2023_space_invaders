@@ -30,11 +30,11 @@ game_over_text = font.render('Game Over', True, 'red')
 w, h = game_over_text.get_size()
 # display.blit(game_over_text, (screen_width/2 - w/2, screen_height / 2 - h/2))
 
-#score = 0
-#score_counter = font.render('Score: '+str(score), True, 'white')
-# display.blit(score_counter, (0, 0))
+pg.mixer.music.load('2023_space_invaders/src/background.wav')
+pg.mixer.music.play(-1)
 
-
+explosion_sound = pg.mixer.Sound('2023_space_invaders/src/explosion.wav')
+laser_sound = pg.mixer.Sound('2023_space_invaders/src/laser.wav')
 # игрок
 player_img = pg.image.load('2023_space_invaders/src/player.png')
 player_width, player_height = player_img.get_size()
@@ -61,6 +61,7 @@ enemy_x = 0
 enemy_y = 0
 
 score = 0
+#cur_round = 3
 
 def enemy_create():
     """ Создаем противника в случайном месте вверху окна."""
@@ -74,6 +75,7 @@ def enemy_create():
 def model_update():
     palayer_model()
     bullet_model()
+    enemy_model()
     enemy_model()
 
 def palayer_model():
@@ -121,10 +123,9 @@ def enemy_model():
             print('BANG!')
             enemy_create()
             bullet_alive = False
-
             score += 100
             print('score += 100')
-
+            explosion_sound.play()
 
 def display_redraw():
     display.blit(bg_img, (0, 0))
@@ -163,6 +164,7 @@ def event_processing():
             print(f'{key[0]=} {bullet_alive=}')
             if not bullet_alive:
                 bullet_create()
+                laser_sound.play()
 
 
     clock.tick(FPS)
