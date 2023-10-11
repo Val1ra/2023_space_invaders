@@ -30,6 +30,11 @@ game_over_text = font.render('Game Over', True, 'red')
 w, h = game_over_text.get_size()
 # display.blit(game_over_text, (screen_width/2 - w/2, screen_height / 2 - h/2))
 
+#score = 0
+#score_counter = font.render('Score: '+str(score), True, 'white')
+# display.blit(score_counter, (0, 0))
+
+
 # игрок
 player_img = pg.image.load('2023_space_invaders/src/player.png')
 player_width, player_height = player_img.get_size()
@@ -54,6 +59,8 @@ enemy_dx = 0
 enemy_dy = 1
 enemy_x = 0
 enemy_y = 0
+
+score = 0
 
 def enemy_create():
     """ Создаем противника в случайном месте вверху окна."""
@@ -91,7 +98,7 @@ def bullet_model():
 def bullet_create():
     global bullet_y, bullet_x, bullet_alive
     bullet_alive = True
-    bullet_x = player_x  # микро дз - пускать из середины
+    bullet_x = player_x + (bullet_width / 2) # микро дз - пускать из середины
     bullet_y = player_y - bullet_height
 
 def enemy_model():
@@ -105,6 +112,7 @@ def enemy_model():
 
     # пересечение с пулей
     if bullet_alive:
+        global score
         re = pg.Rect(enemy_x, enemy_y, enemy_width, enemy_height)
         rb = pg.Rect(bullet_x, bullet_y, bullet_width, bullet_height)
         is_crossed = re.colliderect(rb)
@@ -114,10 +122,16 @@ def enemy_model():
             enemy_create()
             bullet_alive = False
 
+            score += 100
+            print('score += 100')
+
+
 def display_redraw():
     display.blit(bg_img, (0, 0))
     display.blit(player_img, (player_x, player_y))
     display.blit(enemy_img, (enemy_x, enemy_y))
+    score_counter = font.render('Score: ' + str(score), True, 'white')
+    display.blit(score_counter, (0, 0))
     if bullet_alive:
         display.blit(bullet_img, (bullet_x, bullet_y))
     pg.display.update()
