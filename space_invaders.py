@@ -62,6 +62,8 @@ enemy_y = 0
 
 score = 0
 #cur_round = 3
+game_over = False
+GO_sound = True
 
 def enemy_create():
     """ Создаем противника в случайном месте вверху окна."""
@@ -79,14 +81,21 @@ def model_update():
     enemy_model()
 
 def palayer_model():
+    global game_over, player_x
     x = 7   # создание переменной и ее инициализация
     x = 7   # изменение значения уже созданной переменнной
-    global player_x
+    re = pg.Rect(enemy_x, enemy_y, enemy_width, enemy_height)
+    rp = pg.Rect(player_x, player_y, player_width, player_height)
+    is_crossed = rp.colliderect(re)
+    if is_crossed:
+        game_over = True
+    #global player_x
     player_x += player_dx
     if player_x < 0:
         player_x = 0
     elif player_x > screen_width - player_width:
         player_x = screen_width - player_width
+
 
 def bullet_model():
     """ Изменяется положение пули.
@@ -128,15 +137,22 @@ def enemy_model():
             explosion_sound.play()
 
 def display_redraw():
-    display.blit(bg_img, (0, 0))
-    display.blit(player_img, (player_x, player_y))
-    display.blit(enemy_img, (enemy_x, enemy_y))
-    score_counter = font.render('Score: ' + str(score), True, 'white')
-    display.blit(score_counter, (0, 0))
-    if bullet_alive:
-        display.blit(bullet_img, (bullet_x, bullet_y))
-    pg.display.update()
-
+    if not game_over:
+        display.blit(bg_img, (0, 0))
+        display.blit(player_img, (player_x, player_y))
+        display.blit(enemy_img, (enemy_x, enemy_y))
+        score_counter = font.render('Score: ' + str(score), True, 'white')
+        display.blit(score_counter, (0, 0))
+        if bullet_alive:
+            display.blit(bullet_img, (bullet_x, bullet_y))
+        pg.display.update()
+    else:
+        display.blit(game_over_text, (screen_width / 2 - w / 2, screen_height / 2 - h / 2))
+        pg.display.update()
+        global GO_sound
+        if GO_sound:
+            explosion_sound.play()
+            GO_sound = False
 def event_processing():
     global player_dx
     running = True
@@ -165,7 +181,6 @@ def event_processing():
             if not bullet_alive:
                 bullet_create()
                 laser_sound.play()
-
 
     clock.tick(FPS)
     return running
